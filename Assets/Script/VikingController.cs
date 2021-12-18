@@ -9,7 +9,7 @@ public class VikingController : MonoBehaviour
     [SerializeField]float movingSpeed=10f;
     bool jump = true, run;
     public float jumpForce=10000;
-    public GameObject map;
+    public GameObject lightObj;
     Rigidbody rb;
     Animator animator;
 
@@ -63,19 +63,18 @@ public class VikingController : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Quaternion trfm = map.transform.rotation;            
-            
+        {            
             setRotaionState(-1);
             transform.rotation = Quaternion.Euler(Vector3.up * rotationTable[yRotation]);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Quaternion trfm = map.transform.rotation;
 
             setRotaionState(1);
             transform.rotation = Quaternion.Euler(Vector3.up * rotationTable[yRotation]);
         }
+        lightObj.transform.localPosition = transform.localPosition + new Vector3(0, 3, 0);
+        Debug.Log(transform.localPosition);
     }
     void setRotaionState(int value)// value only be -1,1
     {
