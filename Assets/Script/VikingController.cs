@@ -6,13 +6,19 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class VikingController : MonoBehaviour
 {
+    public int rotationSpeed = 200;
     [SerializeField]float movingSpeed=10f;
-    bool jump = true, run;
+    bool jump = true;
+    public bool run = true;
     public float jumpForce=10000;
     public GameObject lightObj;
+    public GameObject sensor;
     Rigidbody rb;
     Animator animator;
-
+    bool turnAnimation = false;
+    float y = 0;
+    int dic = 1;
+   
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +36,8 @@ public class VikingController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 0];
+        if(run)
+            transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 0];
         if (Input.GetKey(KeyCode.A))
         {
             transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 1];
@@ -61,20 +68,95 @@ public class VikingController : MonoBehaviour
                     Destroy(raycastHit.collider.gameObject);
             }
         }
-
+        
+        if (turnAnimation ) {
+            if (dic == -1)
+            {
+                y -= rotationSpeed * Time.deltaTime;
+                if (y < 0) y += 360;
+            }
+            else
+            {
+                y += rotationSpeed * Time.deltaTime;
+                if (y > 360) y -= 360;
+            }
+            if (y > rotationTable[yRotation])
+            {
+                if (y - rotationTable[yRotation] < 10)
+                {
+                    y = rotationTable[yRotation];
+                    turnAnimation = false;
+                }
+            }
+            else
+            {
+                if (rotationTable[yRotation] - y < 10)
+                {
+                    y = rotationTable[yRotation];
+                    turnAnimation = false;
+                }
+            }
+            transform.rotation = Quaternion.Euler(0, y, 0);
+            
+        }
         if (Input.GetKeyDown(KeyCode.Q))
-        {            
-            setRotaionState(-1);
-            transform.rotation = Quaternion.Euler(Vector3.up * rotationTable[yRotation]);
+        {
+            turnAnimation = true;
+            flipSensor(-1);
+            dic = -1;
+            GameObject.Find("Sensor").SendMessage("setVikingDirection", yRotation);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-
-            setRotaionState(1);
-            transform.rotation = Quaternion.Euler(Vector3.up * rotationTable[yRotation]);
+            turnAnimation = true;
+            flipSensor(1);
+            dic = 1;
+            GameObject.Find("Sensor").SendMessage("setVikingDirection", yRotation);
         }
         lightObj.transform.localPosition = transform.localPosition + new Vector3(0, 3, 0);
-        Debug.Log(transform.localPosition);
+    }
+    void flipSensor(int direction)
+    {
+        Debug.Log("touch");
+        switch (yRotation)
+        {
+            case 0:
+                sensor.transform.localPosition += new Vector3(0, 100, -4);
+                break;
+            case 1:
+                sensor.transform.localPosition += new Vector3(-4, 100, 0);
+                break;
+            case 2:
+                sensor.transform.localPosition += new Vector3(0, 100, 4);
+                break;
+            case 3:
+                sensor.transform.localPosition += new Vector3(4, 100, 0);
+                break;
+        }
+        if (direction == 1) //right -1 is left
+        {
+            setRotaionState(1);
+        }
+        else
+        {
+            setRotaionState(-1);
+        }
+        switch (yRotation)
+        {
+            case 0:
+                sensor.transform.localPosition += new Vector3(0, -100, 4);
+                break;
+            case 1:
+                sensor.transform.localPosition += new Vector3(4, -100, 0);
+                break;
+            case 2:
+                sensor.transform.localPosition += new Vector3(0, -100, -4);
+                break;
+            case 3:
+                sensor.transform.localPosition += new Vector3(-4, -100, 0);
+                break;
+        }
+        sensor.transform.rotation = Quaternion.Euler(Vector3.up * rotationTable[yRotation]);
     }
     void setRotaionState(int value)// value only be -1,1
     {
@@ -96,7 +178,8 @@ public class VikingController : MonoBehaviour
 
     void OnCollisionStay(Collision collision)
     {
-        jump = true;
+        if (collision.gameObject.name.Equals("big_module_05")) ;
+            jump = true;
     }
 
     void OnCollisionExit(Collision collision)
