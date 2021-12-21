@@ -11,14 +11,19 @@ public class VikingController : MonoBehaviour
     bool jump = true;
     public bool run = true;
     public float jumpForce=10000;
-    public GameObject lightObj;
-    public GameObject sensor;
+    public GameObject lightObj, endUI;
     Rigidbody rb;
     Animator animator;
     bool turnAnimation = false;
     float y = 0;
     int dic = 1;
    
+    public void toggleStatus()
+    {
+        animator.SetBool("Run", !run);
+        run = !run;
+        isPause = !isPause;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -33,10 +38,21 @@ public class VikingController : MonoBehaviour
                                { Vector3.left, Vector3.back, Vector3.right, Vector3.forward},
                              };
     int[] rotationTable = { 0, 90, 180, 270 };
+    bool isPause = false, isSlide = false;
+    float timeNow = 0;
     // Update is called once per frame
+    
     void Update()
     {
-        if(run)
+        
+        if (isPause && jump) return;
+        Transform vikingShell = GameObject.Find("Character1_Reference").transform;
+        if (isSlide && Time.time - timeNow > 1)
+        {
+            isSlide = false;
+            vikingShell.localRotation = Quaternion.Euler(0, 0, 0);
+        }
+        if(run || !jump)
             transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 0];
         if (Input.GetKey(KeyCode.A))
         {
@@ -44,15 +60,27 @@ public class VikingController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 2];
+            if (!jump)
+            {
+                jump = true;
+                rb.AddForce(jumpForce * Vector3.down);
+            }
+            vikingShell.localRotation = Quaternion.Euler(-80, 0, 0);
+            timeNow = Time.time;
+            isSlide = true;
         }
         if (Input.GetKey(KeyCode.D))
         {
             transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 3];
         }
-        if (Input.GetKey(KeyCode.Space) && jump)
+        if (Input.GetKeyDown(KeyCode.Space) && jump)
         {
-            rb.AddForce(jumpForce * Time.deltaTime * Vector3.up);
+            if (isSlide)
+            {
+                isSlide = false;
+                vikingShell.localRotation = Quaternion.Euler(0, 0, 0);
+            }
+            rb.AddForce(jumpForce * Vector3.up);
             jump = false;
         }
         animator.SetBool("Jump", !jump);
@@ -102,62 +130,24 @@ public class VikingController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Q))
         {
             turnAnimation = true;
-            flipSensor(-1);
+            setRotaionState(-1);
             dic = -1;
-            GameObject.Find("Sensor").SendMessage("setVikingDirection", yRotation);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             turnAnimation = true;
-            flipSensor(1);
+            setRotaionState(1);
             dic = 1;
-            GameObject.Find("Sensor").SendMessage("setVikingDirection", yRotation);
         }
         lightObj.transform.localPosition = transform.localPosition + new Vector3(0, 3, 0);
+
+        if (transform.position.y < -5)
+        {
+            Instantiate(endUI);
+            isPause = true;
+        }
     }
-    void flipSensor(int direction)
-    {
-        Debug.Log("touch");
-        switch (yRotation)
-        {
-            case 0:
-                sensor.transform.localPosition += new Vector3(0, 100, -4);
-                break;
-            case 1:
-                sensor.transform.localPosition += new Vector3(-4, 100, 0);
-                break;
-            case 2:
-                sensor.transform.localPosition += new Vector3(0, 100, 4);
-                break;
-            case 3:
-                sensor.transform.localPosition += new Vector3(4, 100, 0);
-                break;
-        }
-        if (direction == 1) //right -1 is left
-        {
-            setRotaionState(1);
-        }
-        else
-        {
-            setRotaionState(-1);
-        }
-        switch (yRotation)
-        {
-            case 0:
-                sensor.transform.localPosition += new Vector3(0, -100, 4);
-                break;
-            case 1:
-                sensor.transform.localPosition += new Vector3(4, -100, 0);
-                break;
-            case 2:
-                sensor.transform.localPosition += new Vector3(0, -100, -4);
-                break;
-            case 3:
-                sensor.transform.localPosition += new Vector3(-4, -100, 0);
-                break;
-        }
-        sensor.transform.rotation = Quaternion.Euler(Vector3.up * rotationTable[yRotation]);
-    }
+    
     void setRotaionState(int value)// value only be -1,1
     {
         if (value > 0)
@@ -173,13 +163,22 @@ public class VikingController : MonoBehaviour
     }
     void OnCollisionEnter(Collision collision)
     {
-
+        string name = collision.gameObject.name;
+        if (collision.gameObject.name.Equals("Floor(Clone)"))
+        {
+            jump = true;
+        }
+        if (name.Equals("fence_02") || name.Equals("stairs_02")) 
+        {
+            Instantiate(endUI);
+            isPause = true;
+        }
+            
     }
 
     void OnCollisionStay(Collision collision)
     {
-        if (collision.gameObject.name.Equals("big_module_05")) ;
-            jump = true;
+        
     }
 
     void OnCollisionExit(Collision collision)

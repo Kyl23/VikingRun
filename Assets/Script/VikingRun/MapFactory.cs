@@ -5,10 +5,10 @@ using UnityEngine;
 public class MapFactory : MonoBehaviour
 {
     public List<GameObject> needDelete;
-    public GameObject mapFactory;
-    public GameObject floor;
+    public GameObject floor, trapObj;
     public int floorDirection = 0;
     public int vikingDirection = 0;
+    public int trapProb = 0;
     int[] rotationTable = { 0, 90, 180, 270 };
     public void setVikingDirection(int value)
     {
@@ -26,9 +26,15 @@ public class MapFactory : MonoBehaviour
     }
     void newFloor()
     {
+        //need add trap function
+        int probTrap = rdm.Next();
+        if(probTrap%101 < trapProb)
+        {
+            
+        }
         Vector3 tempPosition = needDelete[needDelete.Count - 1].transform.localPosition;//get the last item
         GameObject spawn = Instantiate(floor);
-        spawn.transform.parent = mapFactory.transform;
+        spawn.transform.parent = transform;
         switch (floorDirection)
         {
            case 0:
@@ -54,39 +60,28 @@ public class MapFactory : MonoBehaviour
         return temp;
     }
    
-    void OnTriggerEnter(Collider collider)
+   
+    public void recycleFloor()
     {
-        if (collider.name.Equals("footPassSensor"))
-        {
-            switch (vikingDirection)
-            {
-                case 0:
-                    transform.localPosition += new Vector3(0, 0, 8);
-                    break;
-                case 1:
-                    transform.localPosition += new Vector3(8, 0, 0);
-                    break;
-                case 2:
-                    transform.localPosition += new Vector3(0, 0, -8);
-                    break;
-                case 3:
-                    transform.localPosition += new Vector3(-8, 0, 0);
-                    break;
-            }
+        Destroy(needDelete[0]);
+        needDelete.RemoveAt(0);
 
-            Destroy(needDelete[0]);
-            needDelete.RemoveAt(0);
-        }
-
-        if (needDelete.Count < 9)
+        if (needDelete.Count < 18)
         {
             //build new floor here
             floorDirection = getNextDirection();// update direction
             //here need to new sensor
             for(int i = 0; i < 9; i++) 
                 newFloor();
+
+            floorDirection = getNextDirection();// update direction
+            //here need to new sensor
+            for (int i = 0; i < 9; i++)
+                newFloor();
         }
+
     }
+   
     public void pushList(GameObject obj)
     {
         needDelete.Add(obj);
