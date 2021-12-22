@@ -6,48 +6,75 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class VikingController : MonoBehaviour
 {
-    public int rotationSpeed = 200;
-    [SerializeField]float movingSpeed=10f;
-    bool jump = true;
-    public bool run = true;
-    public float jumpForce=10000;
-    public GameObject lightObj, endUI;
-    Rigidbody rb;
-    Animator animator;
-    bool turnAnimation = false;
-    float y = 0;
-    int dic = 1;
-   
-    public void toggleStatus()
-    {
-        animator.SetBool("Run", !run);
-        run = !run;
-        isPause = !isPause;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-        rb = transform.GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
-    }
-
-    int yRotation = 0;
     Vector3[,] vectorTable = { { Vector3.forward, Vector3.left, Vector3.back, Vector3.right},
                                { Vector3.right, Vector3.forward, Vector3.left, Vector3.back},
                                { Vector3.back, Vector3.right, Vector3.forward, Vector3.left},
                                { Vector3.left, Vector3.back, Vector3.right, Vector3.forward},
                              };
     int[] rotationTable = { 0, 90, 180, 270 };
-    bool isPause = false, isSlide = false;
-    float timeNow = 0;
-    // Update is called once per frame
+    [SerializeField]float movingSpeed=10f;
+    public int rotationSpeed = 200;
+    public float jumpForce=10000 , slideTime = 1.5f;
+    public GameObject lightObj, endUI, timer;
+    Rigidbody rb;
+    Animator animator;
+    bool jump, run, turnAnimation, isPause, isSlide;
+    float y, timeNow;
+    int dic, yRotation;
     
+    public void toggleStatus()
+    {
+        animator.SetBool("Run", !run);
+        run = !run;
+        isPause = !isPause;
+    }
+    public void startGame()
+    {
+        isPause = false;
+        animator.SetBool("Run", true);
+    }
+    public void endGame()
+    {
+        isPause = true;
+    }
+    void setRotaionState(int value)// value only be -1,1
+    {
+        if (value > 0)
+        {
+            if (yRotation == 3) yRotation = 0;
+            else yRotation += 1;
+        }
+        else
+        {
+            if (yRotation == 0) yRotation = 3;
+            else yRotation -= 1;
+        }
+    }
+    void init() {
+        jump = true;
+        run = true;
+        isPause = true;
+        isSlide = false;
+        turnAnimation = false;
+        timeNow = 0;
+        yRotation = 0;
+        y = 0;
+        dic = 1;
+        rb = transform.GetComponent<Rigidbody>();
+        animator = GetComponent<Animator>();
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
+        init();
+    }
+    // Update is called once per frame
     void Update()
     {
         
         if (isPause && jump) return;
         Transform vikingShell = GameObject.Find("Character1_Reference").transform;
-        if (isSlide && Time.time - timeNow > 1)
+        if (isSlide && Time.time - timeNow > slideTime)
         {
             isSlide = false;
             vikingShell.localRotation = Quaternion.Euler(0, 0, 0);
@@ -148,19 +175,6 @@ public class VikingController : MonoBehaviour
         }
     }
     
-    void setRotaionState(int value)// value only be -1,1
-    {
-        if (value > 0)
-        {
-            if (yRotation == 3) yRotation = 0;
-            else yRotation += 1;
-        }
-        else
-        {
-            if (yRotation == 0) yRotation = 3;
-            else yRotation -= 1;
-        }
-    }
     void OnCollisionEnter(Collision collision)
     {
         string name = collision.gameObject.name;
@@ -168,21 +182,5 @@ public class VikingController : MonoBehaviour
         {
             jump = true;
         }
-        if (name.Equals("fence_02") || name.Equals("stairs_02")) 
-        {
-            Instantiate(endUI);
-            isPause = true;
-        }
-            
-    }
-
-    void OnCollisionStay(Collision collision)
-    {
-        
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        
     }
 }
