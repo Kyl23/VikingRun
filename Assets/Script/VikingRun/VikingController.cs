@@ -183,4 +183,13 @@ public class VikingController : MonoBehaviour
             jump = true;
         }
     }
+    void OnTriggerEnter(Collider collider)
+    {
+        string name = collider.gameObject.name;
+        if (collider.gameObject.name.Equals("Coin"))
+        {
+            GameObject.Find("Score").SendMessage("getCoin");
+            Destroy(collider.gameObject);
+        }
+    }
 }

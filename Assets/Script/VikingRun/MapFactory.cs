@@ -6,10 +6,10 @@ public class MapFactory : MonoBehaviour
 {
     public List<GameObject> needDelete;
     public GameObject floor;
-    public GameObject [] trapObj;
+    public GameObject[] trapObj, coinObj;
     public int floorDirection = 0;
     public int vikingDirection = 0;
-    public int trapProb = 0;
+    public int probTrap = 0 , probCoinVsEmpty = 0;
     int[] rotationTable = { 0, 90, 180, 270 };
     public void setVikingDirection(int value)
     {
@@ -63,23 +63,40 @@ public class MapFactory : MonoBehaviour
         //build new floor here
         floorDirection = getNextDirection();// update direction
         int trapIndex = 5; // must not be 0 & 8
-                           //need add trap function
-        int probTrap = rdm.Next();
-        if (probTrap % 101 < trapProb)
+        //need add trap function
+        if (rdm.Next() % 101 <= probTrap)
         {
             trapIndex = rdm.Next(2, 7);
+        }
+        else
+        {
+            trapIndex = -1;
         }
 
         //here need to new sensor
         for (int i = 0; i < 9; i++)
         {
-            if (i != trapIndex)
+            if (i == trapIndex)
             {
-                newFloor(floor);
+                newFloor(trapObj[rdm.Next() % 2]);
             }
             else
             {
-                newFloor(trapObj[rdm.Next() % 2]);
+                if (trapIndex == -1)
+                {
+                    if (rdm.Next() % 101 <= probCoinVsEmpty)
+                    {
+                        newFloor(coinObj[rdm.Next() % 3]);
+                    }
+                    else
+                    {
+                        newFloor(floor);
+                    }
+                }
+                else
+                {
+                    newFloor(floor);
+                }
             }
         }
     }

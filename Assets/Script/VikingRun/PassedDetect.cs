@@ -17,8 +17,14 @@ public class PassedDetect : MonoBehaviour
     }
     private void OnTriggerExit(Collider collider)
     {
-        if (collider.gameObject.name.Equals("Floor(Clone)"))
-        {
+        string name = collider.gameObject.name;
+        if (name.Equals("Floor(Clone)")
+            || name.Equals("CoinFloor3(Clone)") 
+            || name.Equals("CoinFloor2(Clone)") 
+            || name.Equals("CoinFloor1(Clone)")
+            || name.Equals("TrapFloor1(Clone)")
+            || name.Equals("TrapFloor2(Clone)")
+        ){
             GameObject.Find("mapFactory").GetComponent<MapFactory>().SendMessage("recycleFloor");
         }
     }
