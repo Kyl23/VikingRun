@@ -5,7 +5,8 @@ using UnityEngine;
 public class MapFactory : MonoBehaviour
 {
     public List<GameObject> needDelete;
-    public GameObject floor, trapObj;
+    public GameObject floor;
+    public GameObject [] trapObj;
     public int floorDirection = 0;
     public int vikingDirection = 0;
     public int trapProb = 0;
@@ -24,16 +25,10 @@ public class MapFactory : MonoBehaviour
     void Update()
     {
     }
-    void newFloor()
+    void newFloor(GameObject obj)
     {
-        //need add trap function
-        int probTrap = rdm.Next();
-        if(probTrap%101 < trapProb)
-        {
-            
-        }
         Vector3 tempPosition = needDelete[needDelete.Count - 1].transform.localPosition;//get the last item
-        GameObject spawn = Instantiate(floor);
+        GameObject spawn = Instantiate(obj);
         spawn.transform.parent = transform;
         switch (floorDirection)
         {
@@ -50,6 +45,8 @@ public class MapFactory : MonoBehaviour
                 spawn.transform.localPosition = tempPosition + new Vector3(-8, 0, 0);
                 break;
         }
+        spawn.transform.localRotation = Quaternion.Euler(0, rotationTable[floorDirection], 0);
+
         needDelete.Add(spawn);
     }
     int getNextDirection()
@@ -61,6 +58,31 @@ public class MapFactory : MonoBehaviour
     }
    
    
+    void newParagraphFloor()
+    {
+        //build new floor here
+        floorDirection = getNextDirection();// update direction
+        int trapIndex = 5; // must not be 0 & 8
+                           //need add trap function
+        int probTrap = rdm.Next();
+        if (probTrap % 101 < trapProb)
+        {
+            trapIndex = rdm.Next(2, 7);
+        }
+
+        //here need to new sensor
+        for (int i = 0; i < 9; i++)
+        {
+            if (i != trapIndex)
+            {
+                newFloor(floor);
+            }
+            else
+            {
+                newFloor(trapObj[rdm.Next() % 2]);
+            }
+        }
+    }
     public void recycleFloor()
     {
         Destroy(needDelete[0]);
@@ -68,31 +90,9 @@ public class MapFactory : MonoBehaviour
 
         if (needDelete.Count < 18)
         {
-            //build new floor here
-            floorDirection = getNextDirection();// update direction
-            //here need to new sensor
-            for(int i = 0; i < 9; i++) 
-                newFloor();
-
-            floorDirection = getNextDirection();// update direction
-            //here need to new sensor
-            for (int i = 0; i < 9; i++)
-                newFloor();
+            newParagraphFloor();
+            newParagraphFloor();
         }
-
-    }
-   
-    public void pushList(GameObject obj)
-    {
-        needDelete.Add(obj);
-    }
-    void OnTriggerStay(Collider collider)
-    {
-        
-    }
-
-    void OnTriggerExit(Collider collider)
-    {
 
     }
 }
