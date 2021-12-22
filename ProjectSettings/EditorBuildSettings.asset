@@ -4,5 +4,14 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/Scenes/Menu.unity
+    guid: 3b7dfdd126dbce14e9dbe1cab1c6166e
+  - enabled: 1
+    path: Assets/Scenes/VikingRun.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Illustrate.unity
+    guid: 24d84ca34e36d4c439850a6d261b7bb2
   m_configObjects: {}
