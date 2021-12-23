@@ -188,6 +188,7 @@ public class VikingController : MonoBehaviour
         {
             isPause = true;
             isDead = true;
+            setSyncAnimator("Run", false);
         }
     }
     
