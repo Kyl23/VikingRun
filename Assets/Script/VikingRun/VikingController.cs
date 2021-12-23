@@ -18,10 +18,12 @@ public class VikingController : MonoBehaviour
     public GameObject lightObj, endUI, timer, ghost, camera;
     Rigidbody rb;
     Animator animator;
+    AudioSource audio;
     bool jump, run, turnAnimation, isPause, isSlide, isDead;
     float y, timeNow;
     int dic, yRotation;
-    
+    float totalDistance = 0, duplicateMovingSpeed;
+
     void setSyncAnimator(string condition, bool value)
     {
         animator.SetBool(condition, value);
@@ -36,7 +38,8 @@ public class VikingController : MonoBehaviour
     public void startGame()
     {
         isPause = false;
-        setSyncAnimator("Run", true);
+        run = true;
+        setSyncAnimator("Run", run);
     }
     public void cameraViewDone()
     {
@@ -44,7 +47,7 @@ public class VikingController : MonoBehaviour
     }
     void endGameAnimation()
     {
-        ghost.GetComponent<Animator>().SetBool("Hit", true);
+        ghost.GetComponent<Animator>().SetBool("Hit", true);        
         camera.SendMessage("viewStart");
     }
     public void endGame()
@@ -84,27 +87,40 @@ public class VikingController : MonoBehaviour
     void Start()
     {
         init();
+        audio = transform.GetComponent<AudioSource>();
+        duplicateMovingSpeed = movingSpeed;
     }
     // Update is called once per frame
     void Update()
     {
         if (isDead)
         {
+            GameObject.Find("Scream").GetComponent<AudioSource>().Play();
             Instantiate(endUI);
             isDead = false;
         }
         if (isPause && jump)
         {
+            audio.Stop();
             return;
         }
+        if (run)
+        {
+            if(!audio.isPlaying)
+                audio.Play();
+        }
+        movingSpeed = (duplicateMovingSpeed + totalDistance / 1000 > 30) ? 30 : duplicateMovingSpeed + totalDistance / 1000;
         Transform vikingShell = GameObject.Find("Character1_Reference").transform;
         if (isSlide && Time.time - timeNow > slideTime)
         {
             isSlide = false;
             vikingShell.localRotation = Quaternion.Euler(0, 0, 0);
         }
-        if(run || !jump)
+        if (run || !jump)
+        {
             transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 0];
+            totalDistance += Time.deltaTime * movingSpeed;
+        }
         if (Input.GetKey(KeyCode.A))
         {
             transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 1];
@@ -133,6 +149,7 @@ public class VikingController : MonoBehaviour
             }
             rb.AddForce(jumpForce * Vector3.up);
             jump = false;
+            audio.Stop();
         }
         setSyncAnimator("Jump", !jump);
         
@@ -188,6 +205,8 @@ public class VikingController : MonoBehaviour
         {
             isPause = true;
             isDead = true;
+            audio.Stop();
+            GameObject.Find("World").GetComponent<AudioSource>().Stop();
             setSyncAnimator("Run", false);
         }
     }

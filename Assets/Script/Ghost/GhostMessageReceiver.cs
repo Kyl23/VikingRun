@@ -9,12 +9,15 @@ public class GhostMessageReceiver : MonoBehaviour
     float timeNow = 0;
     bool isAnimateNear = false, isAnimateFar = false;
     int target = 0;
+    AudioSource audioSource;
     public void chased()
     {
+        audioSource.Play();
         isAnimateNear = true;
         target = -2;
         isNearing = false;
         GameObject.Find("viking").SendMessage("endGame");
+        GameObject.Find("World").GetComponent<AudioSource>().Stop();
     }
     public void crash()
     {
@@ -25,6 +28,7 @@ public class GhostMessageReceiver : MonoBehaviour
         }
         else
         {
+            audioSource.Play();
             timeNow = Time.time;
             isAnimateNear = true;
             isNearing = true;
@@ -40,7 +44,7 @@ public class GhostMessageReceiver : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = transform.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -65,7 +69,7 @@ public class GhostMessageReceiver : MonoBehaviour
             }
         }
         
-        if(isNearing && Time.time - timeNow > 5)
+        if(isNearing && Time.time - timeNow > 10)
         {
             goBackPosition();
         }
