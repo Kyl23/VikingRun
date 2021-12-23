@@ -29,9 +29,14 @@ public class DeadCameraView : MonoBehaviour
             {
                 transform.localPosition = new Vector3(transform.localPosition.x, camRotated / 180 * y * 60, transform.localPosition.z);
             }
-            transform.localRotation = Quaternion.Euler((camRotated * 0.5f * 10 > 90) ? 90 : camRotated * 0.5f * 10, camRotated, 0);
+            transform.localRotation = Quaternion.Euler((camRotated * 0.5f * 3 > 90) ? 90 : camRotated * 0.5f * 3, camRotated, 0);
             transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y, z - camRotated / 180 * z);
             camRotated += Time.deltaTime * cameraSpeed;
+        }
+        else if(isStartRotate && camRotated >= 180)
+        {
+            GameObject.Find("viking").SendMessage("cameraViewDone");
+            isStartRotate = false;
         }
     }
 }

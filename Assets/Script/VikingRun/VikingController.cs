@@ -38,9 +38,12 @@ public class VikingController : MonoBehaviour
         isPause = false;
         setSyncAnimator("Run", true);
     }
+    public void cameraViewDone()
+    {
+        isDead = true;
+    }
     void endGameAnimation()
     {
-        ghost.transform.localPosition += new Vector3(0, 0, 2);
         ghost.GetComponent<Animator>().SetBool("Hit", true);
         camera.SendMessage("viewStart");
     }
@@ -49,7 +52,6 @@ public class VikingController : MonoBehaviour
         isPause = true;
         setSyncAnimator("Run", false);
         endGameAnimation();
-        isDead = true;
     }
     void setRotaionState(int value)// value only be -1,1
     {
@@ -169,12 +171,16 @@ public class VikingController : MonoBehaviour
             turnAnimation = true;
             setRotaionState(-1);
             dic = -1;
+            GameObject.Find("mapFactory").SendMessage("setVikingDirection", yRotation);
+            GameObject.Find("mapFactory").SendMessage("recycleUselessFloor", transform.localPosition);
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
             turnAnimation = true;
             setRotaionState(1);
             dic = 1;
+            GameObject.Find("mapFactory").SendMessage("setVikingDirection", yRotation);
+            GameObject.Find("mapFactory").SendMessage("recycleUselessFloor", transform.localPosition);
         }
         lightObj.transform.localPosition = transform.localPosition + new Vector3(0, 3, 0);
 
@@ -195,15 +201,6 @@ public class VikingController : MonoBehaviour
         {
             jump = true;
             setSyncAnimator("Jump", false);
-        }
-    }
-    void OnTriggerEnter(Collider collider)
-    {
-        string name = collider.gameObject.name;
-        if (name.Equals("Coin"))
-        {
-            GameObject.Find("Score").SendMessage("getCoin");
-            Destroy(collider.gameObject);
         }
     }
 }

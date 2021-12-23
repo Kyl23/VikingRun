@@ -128,6 +128,19 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 100112, guid: 865d695816206f84eb3d89272878bfe7, type: 3}
   m_PrefabInstance: {fileID: 1847948244}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &71728065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71728062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ced69b0549c05d14698f1d9c3fc421bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chaseSpeed: 20
 --- !u!1 &77363467
 GameObject:
   m_ObjectHideFlags: 0
@@ -2018,6 +2031,8 @@ MonoBehaviour:
   trapObj:
   - {fileID: 5000783811731809402, guid: b1ff59af824119447b0c461957d4af2d, type: 3}
   - {fileID: 8026310877005252663, guid: b676a994be2b39a49b6d5ea19295b7f0, type: 3}
+  - {fileID: 6098546580715832006, guid: c4f9cac1f821da84f9bcc02e3ac4bf95, type: 3}
+  - {fileID: 5026123042136949280, guid: 3473dbf02b26026439d061a188d9da0f, type: 3}
   coinObj:
   - {fileID: 2888099246974521391, guid: f1505b050a0c18b4cb22ff9a6eba7cfe, type: 3}
   - {fileID: 8503737533111654146, guid: f63d12a7b18078349bbbfe663822dbb5, type: 3}
@@ -2072,7 +2087,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1654592668}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -10, z: -2.23}
+  m_LocalPosition: {x: 0, y: -10, z: -1}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children: []
   m_Father: {fileID: 915806764}

@@ -14,16 +14,28 @@ public class TrapSensor : MonoBehaviour
     {
         
     }
+    public void flipToFront()
+    {
+        GameObject.Find("Character1_Reference").transform.rotation = Quaternion.Euler(90, 0, 0);
+    }
+    public void flipToRear()
+    {
+        GameObject.Find("Character1_Reference").transform.rotation = Quaternion.Euler(-90, 0, 0);
+    }
     private void OnTriggerEnter(Collider collider)
     {
         string name = collider.gameObject.name;
         if (name.Equals("fence_02") || name.Equals("stairs_02"))
         {
-            if(name.Equals("fence_02"))
-                GameObject.Find("Character1_Reference").transform.rotation = Quaternion.Euler(90, 0, 0);
-            else if(name.Equals("stairs_02"))
-                GameObject.Find("Character1_Reference").transform.rotation = Quaternion.Euler(-90, 0, 0);
-            GameObject.Find("viking").SendMessage("endGame");
+            if (name.Equals("fence_02"))
+                flipToFront();
+            else if (name.Equals("stairs_02"))
+                flipToRear();
+            GameObject.Find("Ghost").SendMessage("chased");
+        }
+        if (name.Equals("big_tree_01"))
+        {
+            GameObject.Find("Ghost").SendMessage("crash");
         }
     }
 }
