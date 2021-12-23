@@ -9,8 +9,11 @@ public class MapFactory : MonoBehaviour
     public GameObject[] trapObj, coinObj;
     public int floorDirection = 0;
     public int vikingDirection = 0;
+
     public int probTrap = 0 , probCoinVsEmpty = 0;
+    Vector3 tempPosition;
     int[] rotationTable = { 0, 90, 180, 270 };
+    int constFloorDirection, constFloorNum;
     public void setVikingDirection(int value)
     {
         vikingDirection = value;
@@ -27,7 +30,6 @@ public class MapFactory : MonoBehaviour
     }
     void newFloor(GameObject obj)
     {
-        Vector3 tempPosition = needDelete[needDelete.Count - 1].transform.localPosition;//get the last item
         GameObject spawn = Instantiate(obj);
         spawn.transform.parent = transform;
         switch (floorDirection)
@@ -49,19 +51,12 @@ public class MapFactory : MonoBehaviour
 
         needDelete.Add(spawn);
     }
-    int getNextDirection()
-    {
-       int temp = rdm.Next(-1, 2) + floorDirection;
-        if (temp > 3) temp = 0;
-        else if (temp < 0) temp =3;
-        return temp;
-    }
    
    
-    void newParagraphFloor()
+    void newParagraphFloor(Vector3 tp)
     {
+        tempPosition = tp;
         //build new floor here
-        floorDirection = getNextDirection();// update direction
         int trapIndex = 5; // must not be 0 & 8
         //need add trap function
         if (rdm.Next() % 101 <= probTrap)
@@ -78,7 +73,7 @@ public class MapFactory : MonoBehaviour
         {
             if (i == trapIndex)
             {
-                newFloor(trapObj[rdm.Next() % 2]);
+                newFloor(trapObj[rdm.Next() % 4]);
             }
             else
             {
@@ -98,17 +93,90 @@ public class MapFactory : MonoBehaviour
                     newFloor(floor);
                 }
             }
+            tempPosition = needDelete[needDelete.Count - 1].transform.localPosition;
         }
+    }
+    int addFloorDirection(int value) 
+    {
+        int temp = value + vikingDirection;
+        if (temp > 3) temp = 0;
+        else if (temp < 0) temp = 3;
+        return temp;
+    }
+    public void recycleUselessFloor(Vector3 vikingPosition) // 2 is right ,1 is left
+    {
+        try
+        {
+            for (int i = 0; ;)
+            {
+                switch (vikingDirection)
+                {
+                    case 0:
+                        if (needDelete[i].transform.localPosition.z < GameObject.Find("viking").transform.localPosition.z)
+                        {
+                            Destroy(needDelete[i]);
+                            needDelete.RemoveAt(i);
+                            continue;
+                        }
+                        break;
+                    case 1:
+                        if (needDelete[i].transform.localPosition.x < GameObject.Find("viking").transform.localPosition.x)
+                        {
+                            Destroy(needDelete[i]);
+                            needDelete.RemoveAt(i);
+                            continue;
+                        }
+                        break;
+                    case 2:
+                        if (needDelete[i].transform.localPosition.z > GameObject.Find("viking").transform.localPosition.z)
+                        {
+                            Destroy(needDelete[i]);
+                            needDelete.RemoveAt(i);
+                            continue;
+                        }
+                        break;
+                    case 3:
+                        if (needDelete[i].transform.localPosition.x > GameObject.Find("viking").transform.localPosition.x)
+                        {
+                            Destroy(needDelete[i]);
+                            needDelete.RemoveAt(i);
+                            continue;
+                        }
+                        break;
+
+                }
+                i++;
+                if (i >= needDelete.Count) break;
+            }
+        }
+        catch (System.Exception) { Debug.Log("unknow error"); }
     }
     public void recycleFloor()
     {
-        Destroy(needDelete[0]);
-        needDelete.RemoveAt(0);
-
-        if (needDelete.Count < 18)
+        try
         {
-            newParagraphFloor();
-            newParagraphFloor();
+            Destroy(needDelete[0]);
+            needDelete.RemoveAt(0);
+        }
+        catch (System.Exception) { Debug.Log("duplicate destroy"); }
+        Vector3 tpPosition = needDelete[needDelete.Count - 1].transform.localPosition;//get the last item
+        constFloorNum = needDelete.Count;
+        constFloorDirection = floorDirection;
+        if (needDelete.Count < 10)
+        {
+            if (rdm.Next() % 3 < 2)
+            {
+                floorDirection = addFloorDirection(rdm.Next(-1,2));// update direction
+                newParagraphFloor(tpPosition);
+            }
+            else
+            {
+                floorDirection = addFloorDirection(1);
+                newParagraphFloor(tpPosition);
+                floorDirection = addFloorDirection(-1);
+                newParagraphFloor(tpPosition);
+            }
+            
         }
 
     }

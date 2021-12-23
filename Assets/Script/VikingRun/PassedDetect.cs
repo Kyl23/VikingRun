@@ -24,6 +24,8 @@ public class PassedDetect : MonoBehaviour
             || name.Equals("CoinFloor1(Clone)")
             || name.Equals("TrapFloor1(Clone)")
             || name.Equals("TrapFloor2(Clone)")
+            || name.Equals("SideTrapFloor1(Clone)")
+            || name.Equals("SideTrapFloor2(Clone)")
         ){
             GameObject.Find("mapFactory").GetComponent<MapFactory>().SendMessage("recycleFloor");
         }
