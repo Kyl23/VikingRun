@@ -112,18 +112,6 @@ public class VikingController : MonoBehaviour
         }
         animator.SetBool("Jump", !jump);
         
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            RaycastHit raycastHit;
-            if (Physics.Raycast(r, out raycastHit))
-            {
-                if(raycastHit.collider.gameObject.name.Equals("Coin(Clone)"))
-                    Destroy(raycastHit.collider.gameObject);
-            }
-        }
-        
         if (turnAnimation ) {
             if (dic == -1)
             {
