@@ -1996,9 +1996,14 @@ MonoBehaviour:
   trapObj:
   - {fileID: 5000783811731809402, guid: b1ff59af824119447b0c461957d4af2d, type: 3}
   - {fileID: 8026310877005252663, guid: b676a994be2b39a49b6d5ea19295b7f0, type: 3}
+  coinObj:
+  - {fileID: 2888099246974521391, guid: f1505b050a0c18b4cb22ff9a6eba7cfe, type: 3}
+  - {fileID: 8503737533111654146, guid: f63d12a7b18078349bbbfe663822dbb5, type: 3}
+  - {fileID: 3769854680981903931, guid: 58ab5ca3c29708a4488632340ddaee70, type: 3}
   floorDirection: 0
   vikingDirection: 0
-  trapProb: 0
+  probTrap: 0
+  probCoinVsEmpty: 0
 --- !u!1 &1577137692 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7867673785211222796, guid: e4cc6cc92893e3d41983f115cbb1bbf1, type: 3}
