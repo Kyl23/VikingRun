@@ -69,7 +69,7 @@ public class GhostMessageReceiver : MonoBehaviour
             }
         }
         
-        if(isNearing && Time.time - timeNow > 5)
+        if(isNearing && Time.time - timeNow > 10)
         {
             goBackPosition();
         }

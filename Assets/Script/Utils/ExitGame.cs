@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class ExitGame : MonoBehaviour
+public class ExitGame : MonoBehaviour, IPointerClickHandler 
 {
     public void OnPointerClick(PointerEventData e)
     {

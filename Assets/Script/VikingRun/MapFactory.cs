@@ -157,27 +157,28 @@ public class MapFactory : MonoBehaviour
         {
             Destroy(needDelete[0]);
             needDelete.RemoveAt(0);
+
+            Vector3 tpPosition = needDelete[needDelete.Count - 1].transform.localPosition;//get the last item
+            constFloorNum = needDelete.Count;
+            constFloorDirection = floorDirection;
+            if (needDelete.Count < 10)
+            {
+                if (rdm.Next() % 3 < 2)
+                {
+                    floorDirection = addFloorDirection(rdm.Next(-1, 2));// update direction
+                    newParagraphFloor(tpPosition);
+                }
+                else
+                {
+                    floorDirection = addFloorDirection(1);
+                    newParagraphFloor(tpPosition);
+                    floorDirection = addFloorDirection(-1);
+                    newParagraphFloor(tpPosition);
+                }
+
+            }
         }
         catch (System.Exception) { Debug.Log("duplicate destroy"); }
-        Vector3 tpPosition = needDelete[needDelete.Count - 1].transform.localPosition;//get the last item
-        constFloorNum = needDelete.Count;
-        constFloorDirection = floorDirection;
-        if (needDelete.Count < 10)
-        {
-            if (rdm.Next() % 3 < 2)
-            {
-                floorDirection = addFloorDirection(rdm.Next(-1,2));// update direction
-                newParagraphFloor(tpPosition);
-            }
-            else
-            {
-                floorDirection = addFloorDirection(1);
-                newParagraphFloor(tpPosition);
-                floorDirection = addFloorDirection(-1);
-                newParagraphFloor(tpPosition);
-            }
-            
-        }
 
     }
 }

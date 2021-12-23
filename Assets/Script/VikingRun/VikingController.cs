@@ -22,7 +22,8 @@ public class VikingController : MonoBehaviour
     bool jump, run, turnAnimation, isPause, isSlide, isDead;
     float y, timeNow;
     int dic, yRotation;
-    
+    float totalDistance = 0, duplicateMovingSpeed;
+
     void setSyncAnimator(string condition, bool value)
     {
         animator.SetBool(condition, value);
@@ -87,6 +88,7 @@ public class VikingController : MonoBehaviour
     {
         init();
         audio = transform.GetComponent<AudioSource>();
+        duplicateMovingSpeed = movingSpeed;
     }
     // Update is called once per frame
     void Update()
@@ -107,6 +109,7 @@ public class VikingController : MonoBehaviour
             if(!audio.isPlaying)
                 audio.Play();
         }
+        movingSpeed = (duplicateMovingSpeed + totalDistance / 1000 > 30) ? 30 : duplicateMovingSpeed + totalDistance / 1000;
         Transform vikingShell = GameObject.Find("Character1_Reference").transform;
         if (isSlide && Time.time - timeNow > slideTime)
         {
@@ -116,6 +119,7 @@ public class VikingController : MonoBehaviour
         if (run || !jump)
         {
             transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 0];
+            totalDistance += Time.deltaTime * movingSpeed;
         }
         if (Input.GetKey(KeyCode.A))
         {
