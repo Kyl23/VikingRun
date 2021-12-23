@@ -6,8 +6,10 @@ using UnityEngine.UI;
 public class ScoreCounter : MonoBehaviour
 {
     int score = 0;
+    AudioSource audio;
     public void getCoin()
     {
+        audio.Play();
         score++;
         transform.GetComponent<Text>().text = System.Convert.ToString(score);
     }
@@ -18,7 +20,7 @@ public class ScoreCounter : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        audio = transform.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame

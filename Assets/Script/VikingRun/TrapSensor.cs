@@ -27,6 +27,7 @@ public class TrapSensor : MonoBehaviour
         string name = collider.gameObject.name;
         if (name.Equals("fence_02") || name.Equals("stairs_02"))
         {
+            transform.GetComponent<AudioSource>().Play();
             if (name.Equals("fence_02"))
                 flipToFront();
             else if (name.Equals("stairs_02"))
