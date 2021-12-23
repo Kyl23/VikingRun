@@ -164,9 +164,10 @@ public class MapFactory : MonoBehaviour
         constFloorDirection = floorDirection;
         if (needDelete.Count < 10)
         {
-            if (rdm.Next() % 2 == 1)
+            if (rdm.Next() % 3 < 2)
             {
-                floorDirection = 0;// update direction
+                floorDirection = addFloorDirection(rdm.Next(-1,2));// update direction
+                newParagraphFloor(tpPosition);
             }
             else
             {
