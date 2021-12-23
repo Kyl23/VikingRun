@@ -15,27 +15,41 @@ public class VikingController : MonoBehaviour
     [SerializeField]float movingSpeed=10f;
     public int rotationSpeed = 200;
     public float jumpForce=10000 , slideTime = 1.5f;
-    public GameObject lightObj, endUI, timer;
+    public GameObject lightObj, endUI, timer, ghost, camera;
     Rigidbody rb;
     Animator animator;
-    bool jump, run, turnAnimation, isPause, isSlide;
+    bool jump, run, turnAnimation, isPause, isSlide, isDead;
     float y, timeNow;
     int dic, yRotation;
     
+    void setSyncAnimator(string condition, bool value)
+    {
+        animator.SetBool(condition, value);
+        ghost.GetComponent<Animator>().SetBool(condition, value);
+    }
     public void toggleStatus()
     {
-        animator.SetBool("Run", !run);
         run = !run;
+        setSyncAnimator("Run", run);
         isPause = !isPause;
     }
     public void startGame()
     {
         isPause = false;
-        animator.SetBool("Run", true);
+        setSyncAnimator("Run", true);
+    }
+    void endGameAnimation()
+    {
+        ghost.transform.localPosition += new Vector3(0, 0, 2);
+        ghost.GetComponent<Animator>().SetBool("Hit", true);
+        camera.SendMessage("viewStart");
     }
     public void endGame()
     {
         isPause = true;
+        setSyncAnimator("Run", false);
+        endGameAnimation();
+        isDead = true;
     }
     void setRotaionState(int value)// value only be -1,1
     {
@@ -56,6 +70,7 @@ public class VikingController : MonoBehaviour
         isPause = true;
         isSlide = false;
         turnAnimation = false;
+        isDead = false;
         timeNow = 0;
         yRotation = 0;
         y = 0;
@@ -71,8 +86,15 @@ public class VikingController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (isPause && jump) return;
+        if (isDead)
+        {
+            Instantiate(endUI);
+            isDead = false;
+        }
+        if (isPause && jump)
+        {
+            return;
+        }
         Transform vikingShell = GameObject.Find("Character1_Reference").transform;
         if (isSlide && Time.time - timeNow > slideTime)
         {
@@ -110,7 +132,7 @@ public class VikingController : MonoBehaviour
             rb.AddForce(jumpForce * Vector3.up);
             jump = false;
         }
-        animator.SetBool("Jump", !jump);
+        setSyncAnimator("Jump", !jump);
         
         if (turnAnimation ) {
             if (dic == -1)
@@ -158,23 +180,27 @@ public class VikingController : MonoBehaviour
 
         if (transform.position.y < -5)
         {
-            Instantiate(endUI);
             isPause = true;
+            isDead = true;
         }
     }
     
     void OnCollisionEnter(Collision collision)
     {
         string name = collision.gameObject.name;
-        if (collision.gameObject.name.Equals("Floor(Clone)"))
+        if (name.Equals("Floor(Clone)") 
+            || name.Equals("CoinFloor1(Clone)")
+            || name.Equals("CoinFloor2(Clone)")
+            || name.Equals("CoinFloor3(Clone)"))
         {
             jump = true;
+            setSyncAnimator("Jump", false);
         }
     }
     void OnTriggerEnter(Collider collider)
     {
         string name = collider.gameObject.name;
-        if (collider.gameObject.name.Equals("Coin"))
+        if (name.Equals("Coin"))
         {
             GameObject.Find("Score").SendMessage("getCoin");
             Destroy(collider.gameObject);

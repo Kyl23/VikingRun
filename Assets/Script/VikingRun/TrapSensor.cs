@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class TrapSensor : MonoBehaviour
 {
-    public GameObject endUI;
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -21,9 +19,11 @@ public class TrapSensor : MonoBehaviour
         string name = collider.gameObject.name;
         if (name.Equals("fence_02") || name.Equals("stairs_02"))
         {
-            Instantiate(endUI);
+            if(name.Equals("fence_02"))
+                GameObject.Find("Character1_Reference").transform.rotation = Quaternion.Euler(90, 0, 0);
+            else if(name.Equals("stairs_02"))
+                GameObject.Find("Character1_Reference").transform.rotation = Quaternion.Euler(-90, 0, 0);
             GameObject.Find("viking").SendMessage("endGame");
         }
-
     }
 }
