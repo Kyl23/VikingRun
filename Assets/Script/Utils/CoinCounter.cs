@@ -19,7 +19,7 @@ public class CoinCounter : MonoBehaviour
         string name = collider.gameObject.name;
         if (name.Equals("Character1_Reference"))
         {
-            GameObject.Find("Score").SendMessage("getCoin");
+            GameObject.Find("CoinScore").SendMessage("getCoin");
             Destroy(transform.gameObject);
         }
     }

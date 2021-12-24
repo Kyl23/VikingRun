@@ -6,7 +6,7 @@ public class DeadCameraView : MonoBehaviour
 {
     public int cameraSpeed = 5, radius = 5;
     bool isStartRotate = false;
-    float camRotated = 0 , camScaled = 0;
+    float camRotated = 0;
     float y, z;
     public void viewStart()
     {

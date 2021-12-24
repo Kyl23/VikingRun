@@ -21,7 +21,7 @@ public class CountDown : MonoBehaviour
         {
             GameObject.Find("viking").SendMessage("startGame");
             Destroy(transform.parent.parent.gameObject);
+            GameObject.Find("TimeScore").SendMessage("start");
         }
-            
     }
 }

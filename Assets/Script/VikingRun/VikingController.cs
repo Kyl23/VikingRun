@@ -32,6 +32,7 @@ public class VikingController : MonoBehaviour
     public void toggleStatus()
     {
         run = !run;
+        if (run) GameObject.Find("TimeScore").SendMessage("start");
         setSyncAnimator("Run", run);
         isPause = !isPause;
     }
@@ -101,6 +102,7 @@ public class VikingController : MonoBehaviour
         }
         if (isPause && jump)
         {
+            GameObject.Find("TimeScore").SendMessage("end");
             audio.Stop();
             return;
         }
