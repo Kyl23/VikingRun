@@ -104,11 +104,6 @@ public class VikingController : MonoBehaviour
             audio.Stop();
             return;
         }
-        if (run)
-        {
-            if(!audio.isPlaying)
-                audio.Play();
-        }
         movingSpeed = (duplicateMovingSpeed + totalDistance / 1000 > 30) ? 30 : duplicateMovingSpeed + totalDistance / 1000;
         Transform vikingShell = GameObject.Find("Character1_Reference").transform;
         if (isSlide && Time.time - timeNow > slideTime)
@@ -118,6 +113,8 @@ public class VikingController : MonoBehaviour
         }
         if (run || !jump)
         {
+            if (jump && !audio.isPlaying)
+                audio.Play();
             transform.localPosition += Time.deltaTime * movingSpeed * vectorTable[yRotation, 0];
             totalDistance += Time.deltaTime * movingSpeed;
         }

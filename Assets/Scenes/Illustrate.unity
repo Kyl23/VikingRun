@@ -134,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text2
       objectReference: {fileID: 0}
+    - target: {fileID: 1340158241914238306, guid: 31efef71d5e835e489542e6e793f728a, type: 3}
+      propertyPath: m_Text
+      value: "Key \u201CQ\u201D & \u201CE\u201D Control Turn Left Right\n"
+      objectReference: {fileID: 0}
     - target: {fileID: 1340158241914238307, guid: 31efef71d5e835e489542e6e793f728a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -319,6 +323,10 @@ PrefabInstance:
     - target: {fileID: 6430157998783785301, guid: 5c8da02f6308ccd4ab48087b8189bbce, type: 3}
       propertyPath: m_Name
       value: Text3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6430157998783785302, guid: 5c8da02f6308ccd4ab48087b8189bbce, type: 3}
+      propertyPath: m_Text
+      value: Key "S" is Slide
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c8da02f6308ccd4ab48087b8189bbce, type: 3}
@@ -628,6 +636,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Text1
       objectReference: {fileID: 0}
+    - target: {fileID: 1695956015292705990, guid: 1802831136d010d4b80b1ee7e7642a92, type: 3}
+      propertyPath: m_Text
+      value: "Key \u201CA\u201D&\u201CD\u201D Control Left Right\n"
+      objectReference: {fileID: 0}
     - target: {fileID: 1695956015292705991, guid: 1802831136d010d4b80b1ee7e7642a92, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -902,6 +914,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 326204917}
     m_Modifications:
+    - target: {fileID: 2609303252033805600, guid: da1e88aa12c30344980072f8fdb048dd, type: 3}
+      propertyPath: m_Text
+      value: Space is Jump
+      objectReference: {fileID: 0}
     - target: {fileID: 2609303252033805601, guid: da1e88aa12c30344980072f8fdb048dd, type: 3}
       propertyPath: m_Name
       value: Text4
