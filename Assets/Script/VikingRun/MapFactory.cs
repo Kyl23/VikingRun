@@ -128,7 +128,7 @@ public class MapFactory : MonoBehaviour
                         }
                         break;
                     case 2:
-                        if (needDelete[i].transform.localPosition.z > GameObject.Find("viking").transform.localPosition.z - 4)
+                        if (needDelete[i].transform.localPosition.z > GameObject.Find("viking").transform.localPosition.z + 4)
                         {
                             Destroy(needDelete[i]);
                             needDelete.RemoveAt(i);
@@ -136,7 +136,7 @@ public class MapFactory : MonoBehaviour
                         }
                         break;
                     case 3:
-                        if (needDelete[i].transform.localPosition.x > GameObject.Find("viking").transform.localPosition.x - 4)
+                        if (needDelete[i].transform.localPosition.x > GameObject.Find("viking").transform.localPosition.x + 4)
                         {
                             Destroy(needDelete[i]);
                             needDelete.RemoveAt(i);

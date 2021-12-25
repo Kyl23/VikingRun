@@ -2709,7 +2709,7 @@ MonoBehaviour:
   - {fileID: 3769854680981903931, guid: 58ab5ca3c29708a4488632340ddaee70, type: 3}
   floorDirection: 0
   vikingDirection: 0
-  probTrap: 30
+  probTrap: 50
   probCoinVsEmpty: 40
 --- !u!1 &1577137692 stripped
 GameObject:
