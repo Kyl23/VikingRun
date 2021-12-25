@@ -112,7 +112,7 @@ public class MapFactory : MonoBehaviour
                 switch (vikingDirection)
                 {
                     case 0:
-                        if (needDelete[i].transform.localPosition.z < GameObject.Find("viking").transform.localPosition.z)
+                        if (needDelete[i].transform.localPosition.z < GameObject.Find("viking").transform.localPosition.z - 4)
                         {
                             Destroy(needDelete[i]);
                             needDelete.RemoveAt(i);
@@ -120,7 +120,7 @@ public class MapFactory : MonoBehaviour
                         }
                         break;
                     case 1:
-                        if (needDelete[i].transform.localPosition.x < GameObject.Find("viking").transform.localPosition.x)
+                        if (needDelete[i].transform.localPosition.x < GameObject.Find("viking").transform.localPosition.x - 4)
                         {
                             Destroy(needDelete[i]);
                             needDelete.RemoveAt(i);
@@ -128,7 +128,7 @@ public class MapFactory : MonoBehaviour
                         }
                         break;
                     case 2:
-                        if (needDelete[i].transform.localPosition.z > GameObject.Find("viking").transform.localPosition.z)
+                        if (needDelete[i].transform.localPosition.z > GameObject.Find("viking").transform.localPosition.z - 4)
                         {
                             Destroy(needDelete[i]);
                             needDelete.RemoveAt(i);
@@ -136,7 +136,7 @@ public class MapFactory : MonoBehaviour
                         }
                         break;
                     case 3:
-                        if (needDelete[i].transform.localPosition.x > GameObject.Find("viking").transform.localPosition.x)
+                        if (needDelete[i].transform.localPosition.x > GameObject.Find("viking").transform.localPosition.x - 4)
                         {
                             Destroy(needDelete[i]);
                             needDelete.RemoveAt(i);
