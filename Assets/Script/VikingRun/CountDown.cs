@@ -11,6 +11,7 @@ public class CountDown : MonoBehaviour
     void Start()
     {
         timeNow = Time.time;
+        GameObject.Find("Ghost").SendMessage("setTimeNow", Time.time);
     }
 
     // Update is called once per frame

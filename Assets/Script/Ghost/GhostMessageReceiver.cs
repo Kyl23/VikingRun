@@ -35,6 +35,10 @@ public class GhostMessageReceiver : MonoBehaviour
             target = -4;
         }
     }
+    public void setTimeNow(float value)
+    {
+        timeNow = value;
+    }
     public void goBackPosition()
     {
         isNearing = false;

@@ -203,6 +203,7 @@ public class VikingController : MonoBehaviour
         if (transform.position.y < -5)
         {
             isPause = true;
+            jump = true;
             isDead = true;
             audio.Stop();
             GameObject.Find("World").GetComponent<AudioSource>().Stop();
