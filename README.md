@@ -7,28 +7,28 @@ https://kyl233.github.io/VikingRun/
 ## Dev Environment
 -	Windows 11
 ## How To Play
-- AD控制玩家左右移動
--S控制下滑（比較像躺著跑）
--Space 跳躍
--QE旋轉方向（左右）
+"AD" controls player's left and right movement.
+"S" controls sliding (more like lying down and sliding).
+"Space" is for jumping.
+"QE" rotates the direction (left and right).
 
-向右躲避
+Dodge to the right
 
 ![Image text](https://github.com/Kyl23/VikingRun/blob/master/imgFolder/Picture1.png)
 
-向左躲避
+Dodge to the left
 
 ![Image text](https://github.com/Kyl23/VikingRun/blob/master/imgFolder/Picture12.png)
 
-用身體吃金幣           
+Collect coins         
 
 ![Image text](https://github.com/Kyl23/VikingRun/blob/master/imgFolder/Picture2.png)
 
-向上跳躍躲避
+Jump upward to avoid
 
 ![Image text](https://github.com/Kyl23/VikingRun/blob/master/imgFolder/Picture3.png)
 
-下滑躲避                     
+Slide to evade                     
 
 ![Image text](https://github.com/Kyl23/VikingRun/blob/master/imgFolder/Picture4.png)
 
@@ -50,7 +50,7 @@ End Game:
 
  ![Image text](https://github.com/Kyl23/VikingRun/blob/master/imgFolder/Picture8.png)
 
-## Bonus
+## Game Features
 ### Infinite ground spawner 
 - T-shape grounds
 -  a road a player needs to run aside
@@ -98,6 +98,3 @@ Min Speed : 15 & Max Speed: 40
 
 -game can be pause or just directly exit game or restart in game
  
-How good your game is 
--It very similar Temple Run
-- It all is very perfect let see above descript~
